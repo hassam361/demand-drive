@@ -5,12 +5,13 @@
 {% for demand in demands %}
 <article class="media content-section">
    <div class="media-body">
+    
     <div class="article-metadata">
-     
+      <a class="mr-2" href="#">{{ demand.author }}</a>
         <small class="text-muted">{{ demand.date_demanded|date:"F d, Y" }}</small>
     </div>
     <h2><a class="article-title" href="{% url 'demand-detail' demand.id %}">{{ demand.title }}</a></h2>
-    <p class="article-content">{{ demand.content }}</p>
+    <p class="article-content">{{ demand.description }}</p>
   </div>
 </article>
 {% endfor %}
