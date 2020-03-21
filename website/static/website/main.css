@@ -47,6 +47,7 @@ body {
   
   .article-content {
     white-space: pre-line;
+    display: inline;
   }
   
   .article-img {
@@ -82,3 +83,110 @@ body {
   .account-heading {
     font-size: 2.5rem;
   }
+
+  .inline {
+    
+    margin-left: 500px;
+  }
+
+  @import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+.info-msg {
+  color: #059;
+  background-color: #BEF;
+}
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
+}
+.warning-msg {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
+}
+
+/* Just for CodePen styling - don't include if you copy paste */
+html {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 300;
+  margin: 25px;
+}
+.shadow, .bsa-cpc ._default_ {
+  box-shadow: 0 .15rem 1.75rem 0 rgba(33,37,41,.15) !important;
+}
+.my-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .5rem;
+}
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+.card-body {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+.author-title{
+  padding-left: 10px;font-weight: bold;font-size: large;
+}
+.margin-gap { margin-left:12%; }
+.description-detail{
+  color: #2a2e2e;
+font-family: "Helvetica Neue",arial,sans-serif;
+font-size: 15px;
+}
+.badge-pill {
+  padding-right: .6em;
+  padding-left: .6em;
+  border-radius: 5rem;
+}
+.badge-warning {
+  color: #fff;
+  background-color: #ffc107;
+}
+.ml-auto, .mx-auto {
+  margin-left: auto
+  ;
+}
+.badge {
+  display: inline-block;
+  padding: .25em .4em;
+      padding-right: 0.4em;
+      padding-left: 0.4em;
+  font-size: 110%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.view-post{
+  font-size: 110%;
+  font-weight: 700;
+  color: darkred;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+}

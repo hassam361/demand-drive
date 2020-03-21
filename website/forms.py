@@ -1,9 +1,5 @@
 from django import forms
-from .models import Demand
-class FulfillDemandForm(forms.ModelForm):
-    class Meta:
-        model= Demand
-        fields= ('f_content',)
-        labels = {
-            'f_content': ('File Upload'),
-        }
+from .models import FulfillContent
+class FulfillDemandForm(forms.Form):
+    f_suggestion= forms.CharField(label="Suggestions (if any)" ,required=False,widget=forms.Textarea(attrs={"rows":4, "cols":70}))
+    f_content=forms.FileField(label="Upload Content ",required=False)

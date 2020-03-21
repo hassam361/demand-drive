@@ -1,11 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from .models import Demand
+from .models import Demand,FulfillContent
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from .forms import FulfillDemandForm
+from django.contrib import messages
 
 from django.views.generic import (
     ListView,
@@ -17,40 +18,52 @@ from django.views.generic import (
 # Create your views here.
 def home(request):
     context = {
-        'demands': Demand.objects.all()
+        'demands': Demand.objects.all(),
+
     }
     
     return render(request, 'website/index.html')
 
-def fulfillDemand(request,pk):
-    demand=Demand.objects.get(id=pk)
-    if request.method == 'POST':
-        form =  FulfillDemandForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = FulfillDemandForm()
-    return render(request, 'website/demand_detail.html', {
-        'form': form
-    })
-    
+     
+
 class DemandListView(ListView):
     model = Demand
-    template_name = 'website/index.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'website/index.html'  
     context_object_name = 'demands'
     ordering = ['-date_posted']
+
    
 def DemandDetailView(request, pk):
     demand=Demand.objects.get(id=pk)
     if request.method == 'POST':
         form =  FulfillDemandForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('home')
+            data = form.cleaned_data
+            
+            if ((data['f_suggestion'] =='') and (len(request.FILES) == 0)):
+                fulfillers=FulfillContent.objects.filter(demand=demand)
+   
+                form =FulfillDemandForm()
+                messages.info(request,"You have not fulfilled any demand")
+                
+            else:
+                fulfilled_Content=FulfillContent.objects.create(
+                    demand=demand,
+                    fulfiller=request.user,
+                    f_suggestion=data['f_suggestion'],
+                    f_content=data['f_content']
+
+                )
+                demand.status="fulfilled by "+request.user.username
+                demand.save()
+                fulfilled_Content.save()
+                return HttpResponseRedirect("/demand/{id}/".format(id= demand.id))
+        
+            
     else:
         form = FulfillDemandForm()
-    return render(request,'website/demand_detail.html',context={'object':demand,'form':form})
+    fulfillers=FulfillContent.objects.filter(demand=demand)
+    return render(request,'website/demand_detail.html',context={'object':demand,'form':form,'fulfillers':fulfillers})
 
 class DemandCreateView(LoginRequiredMixin, CreateView):
     model = Demand

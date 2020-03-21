@@ -10,13 +10,20 @@ class Demand(models.Model):
     description = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    d_fulfiller =models.IntegerField(null=True) # demand Fulfiller id
     supp_content=models.FileField(upload_to='supporting_content/')
-    f_suggestion=models.CharField(max_length=500) # fulfiller can also give suggestion  
-    f_content=models.FileField(upload_to='fullfilled_content/') # fulfilled content 
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    votes=models.IntegerField(default=0)
+    status=models.CharField(null=True ,max_length=100)
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
+    def get_absolute_url(self): 
         return reverse('demand-detail', kwargs={'pk': self.pk})
+
+class FulfillContent(models.Model):
+    demand=models.ForeignKey(Demand,on_delete=models.CASCADE,null=True)
+    fulfiller=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    f_suggestion=models.CharField(max_length=500,null=True,default='') # fulfiller can also give suggestion  
+    f_content=models.FileField(upload_to='fullfilled_content/',null=True) # fulfilled content 
+    date_fulfilled = models.DateTimeField(default=timezone.now)
+

@@ -1,19 +1,31 @@
 ﻿{% extends "website/base.html" %}
 {% block content %}
 {% load static%}
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 {% for demand in demands %}
-<article class="media content-section">
+<article class="media content-section shadow mb-0">
    <div class="media-body">
     
-    <div class="article-metadata">
+    <div class="article-metadata ">
       <a class="mr-2" href="#">{{ demand.author }}</a>
         <small class="text-muted">{{ demand.date_demanded|date:"F d, Y" }}</small>
     </div>
     <h2><a class="article-title" href="{% url 'demand-detail' demand.id %}">{{ demand.title }}</a></h2>
     <p class="article-content">{{ demand.description }}</p>
+    <p class="inline"> Number of Votes :{{demand.votes}}</p>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1 "  style="border-radius: 10px; color: royalblue; background-color: skyblue;" href="#">Vote demand <i class="far fa-thumbs-up"></i></a>
+
+    
+    <span class="badge badge-pill badge-danger">{{demand.status}}</span>
   </div>
+  
+  
 </article>
+
+
+
 {% endfor %}
 
 

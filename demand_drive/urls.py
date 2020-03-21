@@ -12,7 +12,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('demand/<int:pk>/', web_views.DemandDetailView, name='demand-detail'),
     path('', web_views.DemandListView.as_view(), name='home'),
-    path('fulfill-demand/<int:pk>',web_views.fulfillDemand,name='fulfill-demand'),
     path('demand/new/', web_views.DemandCreateView.as_view(), name='demand-create'),
     path('demand/<int:pk>/update/', web_views.DemandUpdateView.as_view(), name='demand-update'),
     path('demand/<int:pk>/delete/', web_views.DemandDeleteView.as_view(), name='demand-delete'),
