@@ -12,13 +12,16 @@ class Demand(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     supp_content=models.FileField(upload_to='supporting_content/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    votes=models.IntegerField(default=0)
+    votes=models.ManyToManyField(User,blank=True, related_name='demand_votes')
     status=models.CharField(null=True ,max_length=100)
+    reviewed = models.BooleanField(default=False)
     def __str__(self):
         return self.title
 
     def get_absolute_url(self): 
         return reverse('demand-detail', kwargs={'pk': self.pk})
+    def get_vote_url(self):
+        return reverse('demand-detail',kwargs={'pk': self.pk})
 
 class FulfillContent(models.Model):
     demand=models.ForeignKey(Demand,on_delete=models.CASCADE,null=True)

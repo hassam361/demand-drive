@@ -190,3 +190,6 @@ font-size: 15px;
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 
 }
+.liked-btn{
+  border-radius: 10px; color: royalblue; background-color: skyblue;
+}

@@ -14,13 +14,45 @@
     </div>
     <h2><a class="article-title" href="{% url 'demand-detail' demand.id %}">{{ demand.title }}</a></h2>
     <p class="article-content">{{ demand.description }}</p>
-    <p class="inline"> Number of Votes :{{demand.votes}}</p>
-    <a class="btn btn-secondary btn-sm mt-1 mb-1 "  style="border-radius: 10px; color: royalblue; background-color: skyblue;" href="#">Vote demand <i class="far fa-thumbs-up"></i></a>
-
+    
+    <!-- <a class="btn btn-secondary btn-sm mt-1 mb-1 "  style="border-radius: 10px; color: royalblue; background-color: skyblue;" href="{% url 'demand-vote' demand.id  %}">Vote demand <i class="far fa-thumbs-up"></i></a> -->
+    {% if not demand.reviewed and user.is_superuser %}
+    <button type="button" class="btn btn-primary mt-5 " style="float: right;" data-toggle="modal" data-target="#id-{{demand.id}}">
+      Review Demand
+    </button>
+    {%  elif user.is_superuser %}
+    <button type="button"  class="btn btn-success mt-5 "  style="float: right;" >
+      Reviewed
+    </button>
+    {% endif %}
+    <p><a class='like-btn btn btn-secondary btn-sm mt-5 mb-1 '  style="border-radius: 10px; color: royalblue; background-color: skyblue;" data-href="{% url 'api-demand-vote' demand.id  %}" data-likes='{{demand.votes.count}}' href="{% url 'demand-vote' demand.id  %}">{{demand.votes.count}} Vote </a></p>
     
     <span class="badge badge-pill badge-danger">{{demand.status}}</span>
+    
   </div>
-  
+  <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="id-{{demand.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to review this demand? 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-primary" href= "{% url 'review-demand' demand.id %}">Review Demand</a>
+      </div>
+    </div>
+  </div>
+</div>
   
 </article>
 
