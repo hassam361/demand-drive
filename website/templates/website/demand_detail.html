@@ -25,6 +25,9 @@
        
       </div>
       <h2 class="article-title">{{ object.title }}</h2>
+      
+      
+      
       <p class="article-content">{{ object.description }}</p>
       
     </div>
@@ -61,19 +64,42 @@
                   <img typeof="foaf:Image" src="http://cssmenumaker.com/sites/all/themes/cssmenu/images/user_default.png" alt="sahu4ever's picture" title="sahu4ever's picture">
                   <a class="mr-2 author-title" href="#">{{ fulfiller.fulfiller }}</a>
                   <small class="text-muted  " >{{ fulfiller.date_fulfilled|date:"F d, Y" }}</small>
-      
-                  <div class="margin-gap">
-                    <div class="description-detail">
-                      {{fulfiller.f_suggestion}}
-                      {% if fulfiller.f_content%}
+                  <div class="row">
+                    <div class="col-sm-1 mt-2" style="margin-left: 12px;" >
+                      <div  >
+                        <a href="#"><i class="arrow-btn-up fas fa-sort-up"   >  </i>
+                        </a>
+                      </div>
+                      <p style="font-weight:bold; font-size:18pt ; ">12 </p>
+                     <div>
+                       <a href="#"><i class="arrow-btn-down fas fa-sort-down mb-2 "    >  </i>
+                       </a> 
+                      </div>
+                      </div>
+                      <div class="col-lg-8  mt-3 mb-3" >
+                        <div class="description-detail">
+                          
+
+                          <p class="text-break">
+
+                          
+                          {{fulfiller.f_suggestion}}
+                          </p>
+                          {% if fulfiller.f_content%}
+                        </div>
+                        <br>
+                        <a href="{{fulfiller.f_content.url}}"><img src="{{fulfiller.f_content.url}}" alt="..." class="img-thumbnail"></a>
+                        <!-- <a href="{{fulfiller.f_content.url}}"><span class="badge badge-warning ml-auto small badge-pill"> <strong class="view-post">View Post</strong> </span></a>
+                         -->
+                      </div>
+                        {% endif %}
+                        <br>
+                          
                     </div>
-                    <br>
-                    <a href="{{fulfiller.f_content.url}}"><span class="badge badge-warning ml-auto small badge-pill"> <strong class="view-post">View Post</strong> </span></a>
-                    </div>
-                    {% endif %}
-                    <br>
-                      
-                </div>
+                    
+                  </div>
+                
+                 
                
           </div>
           

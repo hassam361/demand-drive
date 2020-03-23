@@ -193,3 +193,10 @@ font-size: 15px;
 .liked-btn{
   border-radius: 10px; color: royalblue; background-color: skyblue;
 }
+
+.arrow-btn-up{
+  font-size: 40px; color: #677075; transform: translate(0px, 15px);
+}
+.arrow-btn-down{
+  font-size: 40px; color: #677075; transform: translate(0px, -25px);
+}
