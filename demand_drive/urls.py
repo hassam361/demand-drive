@@ -11,7 +11,7 @@ from website import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('demand/<int:pk>/', web_views.DemandDetailView, name='demand-detail'),
-    path('', web_views.DemandListView.as_view(), name='home'),
+    path('', web_views.DemandListView, name='home'),
     path('demand/new/', web_views.DemandCreateView.as_view(), name='demand-create'),
     path('demand/<int:pk>/update/', web_views.DemandUpdateView.as_view(), name='demand-update'),
     path('demand/<int:pk>/delete/', web_views.DemandDeleteView.as_view(), name='demand-delete'),
@@ -19,6 +19,9 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(template_name='users/logout.html'),name='logout'),
     path('register/',user_views.register,name='register'),
     path('demand/<int:pk>/vote',web_views.VoteToggle.as_view(),name='demand-vote'),
+    path('demand/<int:pk>/<int:fill>/vote/up',web_views.UserVoteToggleUp.as_view(),name='user-vote-up'),
+    path('demand/<int:pk>/<int:fill>/vote/down',web_views.UserVoteToggleDown.as_view(),name='user-vote-down'),
+    
     path('api/demand/<int:pk>/vote',web_views.VoteApiToggle.as_view(),name='api-demand-vote'),
     path('demand/<int:pk>/review/', web_views.ReviewDemand.as_view(),name='review-demand')
    

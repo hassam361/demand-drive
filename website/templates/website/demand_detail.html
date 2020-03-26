@@ -1,8 +1,10 @@
 {% extends "website/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<div class="row">
+  <div class="col-md-8">
 {% if messages %}
-      <div class="col-sm-13 col-md-13 shadow mb-4">
+      <div class="col-sm-13 col-md-13 shadow mb-4" >
         <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
                 ×</button>
@@ -52,7 +54,7 @@
       <div class="container">
         <br>
         <br>
-        <div class="col-sm-8 col-md-8  ">
+        <div class="col-sm-8 col-md-8  " ">
           <div class="card border-0 shadow mb-4">
             <div class="card-body">
             <h5 class="m-0">Fulfilled By Users</h5>
@@ -67,12 +69,12 @@
                   <div class="row">
                     <div class="col-sm-1 mt-2" style="margin-left: 12px;" >
                       <div  >
-                        <a href="#"><i class="arrow-btn-up fas fa-sort-up"   >  </i>
+                        <a href="{{ fulfiller.get_vote_up_url }}"><i class="arrow-btn-up fas fa-sort-up"   >  </i>
                         </a>
                       </div>
-                      <p style="font-weight:bold; font-size:18pt ; ">12 </p>
+                      <p style="font-weight:bold; font-size:18pt ; ">{{ fulfiller.user_votes.count}} </p>
                      <div>
-                       <a href="#"><i class="arrow-btn-down fas fa-sort-down mb-2 "    >  </i>
+                       <a href="{{ fulfiller.get_vote_down_url }}"><i class="arrow-btn-down fas fa-sort-down mb-2 "    >  </i>
                        </a> 
                       </div>
                       </div>
@@ -127,8 +129,8 @@
       </form>
 
     </div>
-        
-        
+  </div>
+</div>        
       
       
    

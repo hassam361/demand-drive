@@ -7,12 +7,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+   
     <link rel="stylesheet" type="text/css" href="{% static 'website/main.css' %}">
     <link rel="shortcut icon" href="{% static 'website/assets/images/favicon.ico' %}">
-
+  
     <link href="{% static 'website/assets/css/bootstrap.min.css' %}"  rel="stylesheet" type="text/css">
+    <link href="{% static 'website/assets/css/bootstrap.css' %}"  rel="stylesheet" type="text/css">
+   
     <link href="{% static 'website/assets/css/icons.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'website/assets/css/style.css' %}" rel="stylesheet" type="text/css">
 
@@ -51,8 +52,7 @@
       </nav>
     </header>
     <main role="main" class="container">
-      <div class="row">
-        <div class="col-md-8">
+      
           {% if messages %}
             {% for message in messages %}
               <div class="alert alert-{{ message.tags }}">
@@ -75,16 +75,17 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-   
+    <script src="{% static 'website/assets/js/bootstrap.min.js' %}"></script>  
+    
          <!-- Ajax Request -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
    
     <script>
       $(document).ready(function(){
            function updateText(btn, newCount, verb){
-           btn.text( newCount+ " " +verb)
+            console.log(btn.attr("data-likes"))
+            // btn.attr("data-likes", newCount+ " " +verb)
+            btn.text( newCount+" " + verb )
        }
  
        $(".like-btn").click(function(e){
@@ -100,12 +101,12 @@
              method: "GET",
              data: {},
              success: function(data){
-               console.log(data)
+               
                var newLikes;
                if (data.liked){
                    updateText(this_, addLike, "Un Vote")
                } else {
-                   updateText(this_, removeLike, "Vote")
+                   updateText(this_, removeLike+1, "Vote")
                    // remove one like
                }
  

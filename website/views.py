@@ -7,6 +7,8 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from .forms import FulfillDemandForm
 from django.contrib import messages
+from django.db.models import Count
+from django.urls import reverse_lazy
 #rest Frame work commands
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -37,23 +39,26 @@ def home(request):
 
      
 
-class DemandListView(ListView):
+def DemandListView(request):
     
     
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            queryset = Demand.objects.all()
-        else:
-            queryset = Demand.objects.filter(reviewed=True )
+  
+    if request.user.is_superuser:
+        demand = Demand.objects.all().order_by('-date_posted')
+    else:
+        demand = Demand.objects.filter(reviewed=True ).order_by('-date_posted')
+    #feat_demand = Demand.objects.all().order_by('-votes')
+    feat_demand= Demand.objects.annotate(count=Count('votes')).order_by('-count')
+   
+    context = {
+        'demands': demand,
+        'feat_demand':feat_demand
 
-        return queryset
+    }
+    
+    return render(request, 'website/index.html', context)
 
-    template_name = 'website/index.html'  
-    context_object_name = 'demands'
-    ordering = ['-date_posted']
-
-
-
+    
 
 class VoteApiToggle(APIView):
    
@@ -96,6 +101,45 @@ class VoteToggle(RedirectView):
             url_='/login'
         
         return url_
+class UserVoteToggleUp(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        obj=get_object_or_404(Demand,pk=kwargs['pk'])
+        fulfiller=FulfillContent.objects.filter(demand=obj)
+        content_id=kwargs['fill']
+        content= fulfiller.get(id=content_id)
+        url_=obj.get_absolute_url()
+        user= self.request.user
+        
+        if user.is_authenticated:
+            
+            if user in content.user_votes.all():
+                pass
+            else: 
+                content.user_votes.add(user)
+        else:
+            url_='/login'
+        return url_
+
+class UserVoteToggleDown(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        obj=get_object_or_404(Demand,pk=kwargs['pk'])
+        fulfiller=FulfillContent.objects.filter(demand=obj)
+        content_id=kwargs['fill']
+        content= fulfiller.get(id=content_id)
+        url_=obj.get_absolute_url()
+        user= self.request.user
+        
+        if user.is_authenticated:
+            
+            if user in content.user_votes.all():
+                content.user_votes.remove(user)
+            else:
+                pass 
+                
+        else:
+            url_='/login'
+        return url_
+
 class ReviewDemand(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         obj = get_object_or_404(Demand, pk= kwargs['pk'])
@@ -138,16 +182,20 @@ def DemandDetailView(request, pk):
             
     else:
         form = FulfillDemandForm()
-    fulfillers=FulfillContent.objects.filter(demand=demand)
+    fulfillers=FulfillContent.objects.annotate(count=Count('user_votes')).order_by('-count')
     return render(request,'website/demand_detail.html',context={'object':demand,'form':form,'fulfillers':fulfillers})
 
 class DemandCreateView(LoginRequiredMixin, CreateView):
     model = Demand
     fields = ['title', 'description']
-
+    success_url = reverse_lazy('home')
     def form_valid(self, form):
         form.instance.author = self.request.user
+       
+        messages.info(self.request,"Your demand will be reviewed by  Admin, after approval it will be posted ")
+    
         return super().form_valid(form)
+       
 class DemandUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Demand
     fields = ['title', 'description']
