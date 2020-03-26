@@ -182,7 +182,8 @@ def DemandDetailView(request, pk):
             
     else:
         form = FulfillDemandForm()
-    fulfillers=FulfillContent.objects.annotate(count=Count('user_votes')).order_by('-count')
+    fulfillers=FulfillContent.objects.filter(demand=demand).annotate(count=Count('user_votes')).order_by('-count')
+   
     return render(request,'website/demand_detail.html',context={'object':demand,'form':form,'fulfillers':fulfillers})
 
 class DemandCreateView(LoginRequiredMixin, CreateView):

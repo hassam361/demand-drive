@@ -54,12 +54,21 @@
     <main role="main" class="container">
       
           {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
+          <div class="col-sm-13 col-md-13 shadow mb-4" >
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    ×</button>
+                <span class="glyphicon glyphicon-hand-right"></span> <strong>Error Message</strong>
+                <hr class="message-inner-separator">
+                <p>
+                  {% for message in messages%}
+                  {{ message}}
+                  {% endfor %}
+                  </p>
+            </div>
+          </div>
+       
+        {% endif %}
             <br>
             <br>
             <br>
