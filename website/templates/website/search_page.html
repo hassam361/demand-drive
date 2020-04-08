@@ -1,0 +1,88 @@
+{% extends "website/base.html" %}
+{% block content %}
+{% load static%}
+<header class="masthead text-white text-center">
+  
+    <!-- <div  style="background-image: url(../static/website/assets/images/background.jpg)" >  -->
+  
+      <div class="overlay"></div>
+    <div class="container">
+       <div class="row">
+        <div class="col-xl-9 mx-auto">
+          <h4 class="mb-3">Try Our Customized Demand Search</h4>
+        </div>
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+          <form action="{% url 'search_results' %}" method="get">
+            <div class="form-row mb-5">
+              <div class="col-12 col-md-9 mb-2 mb-md-0">
+                <input type="text" name="search" class="form-control form-control-lg" placeholder="Enter your query...">
+              </div>
+              <div class="col-12 col-md-3">
+                <button type="submit" class="btn btn-block btn-lg btn-primary">Search!</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    
+    </div>
+    <!-- </div> -->
+    
+  </header>
+
+<div class="row">
+  <div class="col-md-8">
+
+    {% for demand in demands %}
+
+  
+  <article class="media content-section shadow mb-4 " >
+    <div class="media-body">
+     
+     <div class="article-metadata ">
+       <a class="mr-2" href="#">{{ demand.author }}</a>
+         <small class="text-muted">{{ demand.date_posted|date:"F d, Y H:i" }}</small>
+     </div>
+     <h2><a class="article-title" href="{% url 'demand-detail' demand.id %}">{{ demand.title }}</a></h2>
+     <p class="article-content">{{ demand.description }}</p>
+     
+     <!-- <a class="btn btn-secondary btn-sm mt-1 mb-1 "  style="border-radius: 10px; color: royalblue; background-color: skyblue;" href="{% url 'demand-vote' demand.id  %}">Vote demand <i class="far fa-thumbs-up"></i></a> -->
+     {% if not demand.reviewed and user.is_superuser %}
+     <button type="button" class="btn btn-primary mt-5 " style="float: right;" data-toggle="modal" data-target="#id-{{demand.id}}">
+       Review Demand
+     </button>
+     {%  elif user.is_superuser %}
+     <button type="button"  class="btn btn-success mt-5 "  style="float: right;" >
+       Reviewed
+     </button>
+     {% endif %}
+     <p><a class='like-btn btn btn-secondary btn-sm mt-5 mb-1 '  style="border-radius: 10px; color: royalblue; background-color: skyblue;" data-href="{% url 'api-demand-vote' demand.id  %}" data-likes='{{demand.votes.count}}' href="{% url 'demand-vote' demand.id  %}">{{demand.votes.count}} Vote </a></p>
+     {% if demand.demand.get_fulfillers_count == 0 %}
+     <span class="badge badge-pill badge-danger"> Not Fulfilled    </span>
+   
+      {% else %}
+      <span class="badge badge-pill badge-danger"> Fulfilled By {{demand.get_fulfillers_count}} User </span>
+     {% endif %}
+   </div>
+   <!-- Button trigger modal -->
+ 
+ 
+ 
+   
+ </article>
+ 
+ 
+ 
+ {% endfor %}
+</div>
+ 
+    
+ 
+ 
+
+</div>
+
+
+
+
+{% endblock content %}

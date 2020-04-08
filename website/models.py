@@ -26,6 +26,8 @@ class Demand(models.Model):
     def get_fulfillers_count(self):
         obj=FulfillContent.objects.filter(demand=self.id).count()
         return obj
+    def get_author_name(self):
+        return self.author.username
 
 class FulfillContent(models.Model):
     demand=models.ForeignKey(Demand,on_delete=models.CASCADE,null=True)

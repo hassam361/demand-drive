@@ -9,6 +9,7 @@ from .forms import FulfillDemandForm
 from django.contrib import messages
 from django.db.models import Count
 from django.urls import reverse_lazy
+from django.db.models import Q
 #rest Frame work commands
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -58,7 +59,7 @@ def DemandListView(request):
     
     return render(request, 'website/index.html', context)
 
-    
+
 
 class VoteApiToggle(APIView):
    
@@ -86,6 +87,20 @@ class VoteApiToggle(APIView):
        
         
         return Response(data)
+        
+def SearchDemands(request):
+    
+    search=str(request.GET.get('search'))
+
+    
+    demands = Demand.objects.filter(Q(title__icontains=search) |  Q(author__username__icontains=search))
+    context = {'demands' : demands}
+
+    return render(request,'website/search_page.html',context)
+
+
+
+
 
 class VoteToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
