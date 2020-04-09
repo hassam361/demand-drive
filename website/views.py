@@ -101,7 +101,8 @@ def SearchDemands(request):
     return render(request,'website/search_page.html',context)
 
 
-
+def GetAnalytics(request):
+    return render(request,'website/analytics.html',None)
 
 
 class VoteToggle(RedirectView):
