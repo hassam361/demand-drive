@@ -92,8 +92,10 @@ def SearchDemands(request):
     
     search=str(request.GET.get('search'))
 
-    
-    demands = Demand.objects.filter(Q(title__icontains=search) |  Q(author__username__icontains=search))
+    if search !='':
+        demands = Demand.objects.filter(Q(title__icontains=search) |  Q(author__username__icontains=search))
+    else:
+        demands = Demand.objects.filter(reviewed=True ).order_by('-date_posted')
     context = {'demands' : demands}
 
     return render(request,'website/search_page.html',context)
