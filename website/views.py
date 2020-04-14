@@ -102,6 +102,7 @@ def SearchDemands(request):
 
 
 def GetAnalytics(request):
+    
     return render(request,'website/analytics.html',None)
 
 
