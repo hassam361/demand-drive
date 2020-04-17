@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.db.models import Count
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.db.models import Sum,Count
 #rest Frame work commands
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -101,9 +102,49 @@ def SearchDemands(request):
     return render(request,'website/search_page.html',context)
 
 
-def GetAnalytics(request):
+class GetAnalytics(APIView):
+
+    '''
+    get top five users who posted most demands
     
-    return render(request,'website/analytics.html',None)
+     
+    '''
+    def get(self, request, pk=None, format=None):
+        user_fulfilled_demands=FulfillContent.objects.values('fulfiller__username').annotate(count=Count('demand')).order_by('-count')
+        labels=[]
+        barData=[]
+        f_demands=Demand.objects.filter(~Q(status=None)).count()
+        un_f_demands=Demand.objects.filter(status=None).count()
+        reviewed_dem=Demand.objects.filter(reviewed=True).count()
+        un_reviewed=Demand.objects.filter(reviewed=False).count()
+        ana_data=[f_demands,un_f_demands,reviewed_dem,un_reviewed]
+
+        print(un_f_demands)
+        for user in user_fulfilled_demands:
+            labels.append(user['fulfiller__username'])
+            barData.append(user['count'])
+       
+        data ={ 
+            
+            "labels":labels,
+            "barData":barData ,
+            "ana_data":ana_data
+           
+            } 
+        return Response(data)
+
+def GetAnalyticsPage(request):
+    
+    demand_count=Demand.objects.all().count()
+    users_count=User.objects.all().count()
+    f_demands=Demand.objects.filter(~Q(status=None)).count()
+
+    data={
+        'demand_count': demand_count,
+        'users_count' : users_count, 
+        'f_demands'   : f_demands,
+    }
+    return render(request,'website/analytics.html',data)
 
 
 class VoteToggle(RedirectView):

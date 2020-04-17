@@ -129,6 +129,94 @@ html {
   margin-bottom: 1.5rem !important;
 }
 
+.text-uppercase{
+  text-transform: uppercase;
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color: rgba(255,255,255,.65);
+}
+
+.text-uppercase h6 {
+  margin-bottom: .5rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: rgba(255,255,255,.65);
+  font-size: 1rem;
+}
+
+.display-1 {
+
+  font-size: 6rem;
+  font-weight: 300;
+  line-height: 1.1;
+  color: rgba(255,255,255,.65);
+}
+.display-1 h1{
+  font-size: 6rem;
+  margin-top: 0;
+  margin-bottom: .5rem;
+font-weight: 300;
+
+line-height: 1.1;
+}
+
+.bg-danger {
+
+  background-color: #d9534f !important;
+
+}
+.cardAna-danger {
+
+  background-color: #d9534f;
+}
+.cardAna-inverse {
+
+  color: rgba(255,255,255,.65);
+
+}
+.bg-success {
+
+  background-color: #5cb85c !important;
+
+}
+
+
+.cardAna {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  border: 1px solid rgba(0,0,0,.125);
+}
+.cardAna-block{
+  flex: 1 1 auto;
+  padding: 1.25rem;
+ 
+}
+.cardAna-block .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.cardAna-block .rotate i {
+  color: rgba(20, 20, 20, 0.15);
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+  transform: translate(-30%,-10%); 
+}
+
 .card {
   position: relative;
   display: flex;

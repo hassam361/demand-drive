@@ -1,103 +1,143 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% extends "website/base.html" %}
+{% block content %}
+{% load static%}
+
+
+
+
+
+
+
 
 <div class="container">
+  <div class="row ml-4"> 
+    <div class="col-xl-3 col-lg-6 ml-3">
+      <div class="card cardAna cardAna-inverse card-success">
+      <div class="cardAna-block bg-success">
+      <div class="rotate">
+        <i class="fa fa-list fa-4x"></i>
+      </div>
+      <h6 class="text-uppercase">Demands</h6>
+      <h1 class="display-1">{{ demand_count }}</h1>
+      </div>
+      </div>
+      </div>
+      <div class="col-xl-4 col-lg-6">
+        <div class="card cardAna cardAna-inverse card-warning">
+          <div class="cardAna-block bg-warning">
+          <div class="rotate">
+          <i class="fa fa-user fa-5x"></i>
+          </div>
+          <h6 class="text-uppercase">Users</h6>
+          <h1 class="display-1">{{ users_count }}</h1>
+          </div>
+          </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card cardAna cardAna-inverse card-danger">
+        <div class="cardAna-block bg-danger">
+        <div class="rotate">
+          <i class="fa fa-share fa-5x"></i>
+        
+        </div>
+        <h6 class="text-uppercase">Fulfilled Demands</h6>
+        <h1 class="display-1">{{ f_demands }}</h1>
+        </div>
+        </div>
+        </div>
+  </div>
+  <hr>
+  <br>
+  <br>
   <div class="row justify-content-md-center">
     <div class="col-7">
-      <canvas id="myChart" height="200" ></canvas>
-    </div>
+      
+      <canvas id="fulfiller-chart" data-url="{% url 'api-analytics' %}" ></canvas>
+
+        </div>
     <div class="col-5">
-      <canvas id="myChart1" ></canvas>
+      <canvas id="demands-pie-chart" data-url="{% url 'api-analytics' %}" ></canvas>
+  
     </div>
   </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script>
+      // Global Options
+      $(function () {
+      var fulfillerChart = $("#fulfiller-chart");
+      var Url = fulfillerChart.attr("data-url");
+      Chart.defaults.global.defaultFontFamily = 'Lato';
+      Chart.defaults.global.defaultFontSize = 18;
+      Chart.defaults.global.defaultFontColor = '#777';
 
-<script>
-    let myChart = document.getElementById('myChart').getContext('2d');
-
-    // Global Options
-    Chart.defaults.global.defaultFontFamily = 'Lato';
-    Chart.defaults.global.defaultFontSize = 18;
-    Chart.defaults.global.defaultFontColor = '#777';
-
-    let massPopChart = new Chart(myChart, {
-      type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
-      data:{
-        labels:['Harry', 'Potter', 'James', 'Hermoine', 'Granger', 'Ronald'],
-        datasets:[{
-          label:'Users',
-          data:[
-            6,
-            10,
-            8,
-            2,
-            4,
-            9
-          ],
-          //backgroundColor:'green',
-          backgroundColor:[
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(255, 206, 86, 0.6)',
-            'rgba(75, 192, 192, 0.6)',
-            'rgba(153, 102, 255, 0.6)',
-            'rgba(255, 159, 64, 0.6)',
-            'rgba(255, 99, 132, 0.6)'
-          ],
-          borderWidth:1,
-          borderColor:'#777',
-          hoverBorderWidth:3,
-          hoverBorderColor:'#000'
-        }]
-      },
-      options:{
-        title:{
-          display:true,
-          text:'Most generating demands by users',
-          fontSize:25
+      console.log(Url)
+      $.ajax({
+        url: Url,
+       
+        success: function (data) {
+          console.log(data)
+          drawBarGraph(data, 'fulfiller-chart'); 
+          drawPieChart(data,'demands-pie-chart');
         },
-        legend:{
-          display:true,
-          position:'right',
-          labels:{
-            fontColor:'#000'
-          }
-        },
-        layout:{
-          padding:{
-            left:50,
-            right:0,
-            bottom:0,
-            top:0
-          }
-        },
-        tooltips:{
-          enabled:true
-        }
-      }
-    });
+      });
 
-let myChart1 = document.getElementById('myChart1').getContext('2d');
+        function drawBarGraph(data, id) { 
+        var labels = data.labels; 
+       
+       console.log(data);
+        var ctx = document.getElementById("fulfiller-chart").getContext('2d'); 
+        var myChart = new Chart(ctx, { 
+          type: 'bar', 
+          data: { 
+            labels: data.labels  , 
+            datasets: [{ 
+              label: "Most Fulfilling users", 
+              data: data.barData, 
+              backgroundColor: [ 
+                'rgba(255, 99, 132, 0.2)', 
+                'rgba(54, 162, 235, 0.2)', 
+                'rgba(255, 206, 86, 0.2)', 
+                'rgba(75, 192, 192, 0.2)', 
+                'rgba(153, 102, 255, 0.2)', 
+                'rgba(255, 159, 64, 0.2)' 
+              ], 
+              borderColor: [ 
+                'rgba(255, 99, 132, 1)', 
+                'rgba(54, 162, 235, 1)', 
+                'rgba(255, 206, 86, 1)', 
+                'rgba(75, 192, 192, 1)', 
+                'rgba(153, 102, 255, 1)', 
+                'rgba(255, 159, 64, 1)' 
+              ], 
+              borderWidth: 1 
+            }] 
+          }, 
+          options: { 
+            scales: { 
+              yAxes: [{ 
+                ticks: { 
+                  beginAtZero: true 
+                } 
+              }] 
+            } 
+          } 
+        }); 
+      } 
 
-// Global Options
-Chart.defaults.global.defaultFontFamily = 'Lato';
-Chart.defaults.global.defaultFontSize = 18;
-Chart.defaults.global.defaultFontColor = '#777';
-
-let massPopChart1 = new Chart(myChart1, {
-  type:'pie', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+      function drawPieChart(data, id) { 
+        var labels = data.labels; 
+       
+       console.log(data);
+        var ctx = document.getElementById("demands-pie-chart").getContext('2d'); 
+        var myChart = new Chart(ctx, { 
+          type:'pie', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
   data:{
-    labels:['Harry', 'Potter', 'James', 'Hermoine', 'Granger', 'Ronald'],
+    labels:['fulfilled', 'un fulfilled' , 'reviewed' , 'un reviewed'],
     datasets:[{
-      label:'Users',
-      data:[
-        6,
-        10,
-        8,
-        2,
-        4,
-        9
-      ],
+      label:'Demands',
+      data:data.ana_data,
       //backgroundColor:'green',
       backgroundColor:[
         'rgba(255, 99, 132, 0.6)',
@@ -117,8 +157,8 @@ let massPopChart1 = new Chart(myChart1, {
   options:{
     title:{
       display:true,
-      text:'Most generating demands by users',
-      fontSize:25
+      text:'Analytics of demands',
+      fontSize:16
     },
     legend:{
       display:true,
@@ -139,5 +179,19 @@ let massPopChart1 = new Chart(myChart1, {
       enabled:true
     }
   }
-});
-  </script>
+        }); 
+      } 
+
+      });
+
+      
+
+      
+     
+    
+      
+  
+  
+    </script>
+{% endblock content %}
+
