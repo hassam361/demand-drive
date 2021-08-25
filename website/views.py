@@ -37,7 +37,7 @@ def home(request):
 
     }
     
-    return render(request, 'website/index.html')
+    return render(request, 'website/index.html', context)
 
      
 
